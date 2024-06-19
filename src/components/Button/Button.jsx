@@ -1,11 +1,10 @@
-import styles from './Button.module.css';
+import { useState } from 'react';
+import './Button.css'; 
 
-const Button = () => {
-
+const Button = ({ text, onClick }) => {
+  
   return (
-    <>
-      <button className={styles['button accent']}>сохранить</button>
-    </>
+      <button className='button accent' onClick={onClick}>{text}</button>
   );
 }
 
