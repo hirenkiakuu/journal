@@ -47,7 +47,7 @@ const JournalForm = ({ onSubmit }) => {
         
         <div className={styles['form-row']}>
           <label htmlFor="date" className={styles['form-label']}>
-            <img src="public/calendar.svg" alt="calendar-icon" />
+            <img src="/calendar.svg" alt="calendar-icon" />
             <span>Дата</span>
           </label>
           <input type="date" value={values.date} onChange={onChange} name='date' id='date' className={cn(styles['input'], {
@@ -57,7 +57,7 @@ const JournalForm = ({ onSubmit }) => {
 
         <div className={styles['form-row']}>
           <label htmlFor="tag" className={styles['form-label']}>
-            <img src="public/folder.svg" alt="folder" />
+            <img src="/folder.svg" alt="folder" />
             <span>Метки</span>
           </label>
           <input value={values.tag} onChange={onChange} type="text" name='tag' id='tag' className={styles['input']}/>

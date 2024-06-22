@@ -1,6 +1,6 @@
 .left-panel {
   padding: 30px 0px;
-  width: 402px;
+  min-width: 402px;
   height: 1024px;
   display: flex;
   flex-direction: column;

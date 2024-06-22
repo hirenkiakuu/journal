@@ -1,4 +1,5 @@
 import './App.css';
+import { useState, useEffect } from 'react';
 import Header from './components/Header/Header';
 import JournalList from './components/JournalList/JournalList';
 import Button from './components/Button/Button';
@@ -9,19 +10,56 @@ import Body from './layouts/Body/Body';
 import JournalForm from './components/JournalForm/JournalForm';
 import CardButton from './components/CardButton/CardButton';
 
+const INITIAL_DATA = [
+  {
+    title: 'Подготовка к обновлению курсов',
+    text: 'Горные походы открывают удивительные природные ландшафты, испытывают туристов физически и ',
+    date: new Date(),
+    id: 1,
+  },
+  {
+    title: 'Поход в горы',
+    text: 'Думал, что очень много времени',
+    date: new Date(),
+    id: 2,
+  },
+];
+
 const App = () => {
-  const data = [
-    {
-      title: 'Подготовка к обновлению курсов',
-      text: 'Горные походы открывают удивительные природные ландшафты, испытывают туристов физически и ',
-      date: new Date(),
-    },
-    {
-      title: 'Поход в горы',
-      text: 'Думал, что очень много времени',
-      date: new Date(),
-    },
-  ];
+  const [data, setData] = useState([]); 
+
+  useEffect(() => {
+    const tData = JSON.parse(localStorage.getItem('data'));
+    if (tData) {
+      setData(tData.map(item => ({
+        ...item,
+        date: new Date(item.date)
+      })));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (data.length) {
+      localStorage.setItem('data', JSON.stringify(data));
+    }
+  }, [data]);
+  
+  const sortNotes = (a, b) => {
+    if (a.date < b.date) {
+      return 1;
+    } else return -1;
+  };
+
+  const addNote = (journalNote) => {
+    setData((prevData) => [
+      ...prevData,
+      {
+        ...journalNote,
+        date: new Date(journalNote.date),
+        id: prevData.length > 0 ? Math.max(...prevData.map((i) => i.id)) + 1 : 1,
+      },
+    ]);
+  };
 
   
   return (
@@ -31,27 +69,16 @@ const App = () => {
           <Header />
           <JournalAddButton />
           <JournalList>
-            
-            <CardButton>
-              <JournalNote
-                title={data[0].title}
-                text={data[0].text}
-                date={data[0].date}
-              />
-            </CardButton>
-
-            <CardButton>
-              <JournalNote
-                title={data[1].title}
-                text={data[1].text}
-                date={data[1].date}
-              />
-            </CardButton>
+            {data.length === 0 ? <p>Записей пока нет</p> : data.sort(sortNotes).map((el) => (
+              <CardButton key={el.id}>
+                <JournalNote title={el.title} text={el.text} date={el.date} />
+              </CardButton>
+            ))}
           </JournalList>
         </LeftPanel>
-        
+
         <Body>
-          <JournalForm />
+          <JournalForm onSubmit={addNote} />
         </Body>
       </div>
     </>
