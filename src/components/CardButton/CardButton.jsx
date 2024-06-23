@@ -1,7 +1,7 @@
-// import styles from './CardButton.module.css';
+import styles from './CardButton.module.css';
 
 const CardButton = ({ children, className }) => {
-  const cl = 'card-button' + (className ? ' ' + className : '');
+  const cl = styles['card-button'] + (className ? ' ' + className : '');
 
   return (
     <>
