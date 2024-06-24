@@ -5,6 +5,7 @@ import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import LeftPanel from './layouts/LeftPanel/LeftPanel';
 import Body from './layouts/Body/Body';
 import JournalForm from './components/JournalForm/JournalForm';
+import { UserContextProvider } from './context/user.context';
 import { useLocalStorage } from './hooks/useLocalStorage.hook';
 
 function mapItems(items) {
@@ -12,39 +13,45 @@ function mapItems(items) {
     return [];
   }
 
-  return items.map(i => ({
+  return items.map((i) => ({
     ...i,
-    date: new Date(i.date)
+    date: new Date(i.date),
   }));
-};
+}
 
 const App = () => {
   const [data, setData] = useLocalStorage('data');
 
   const addNote = (journalNote) => {
-    setData([...mapItems(data), 
+    setData([
+      ...mapItems(data),
       {
         ...journalNote,
         date: new Date(journalNote.date),
-        id:
-          data.length > 0 ? Math.max(...data.map((i) => i.id)) + 1 : 1,
+        id: data?.length > 0 ? Math.max(...data.map((i) => i.id)) + 1 : 1,
       },
     ]);
   };
 
+  // const filterNotesByUserId = (Notes) => {
+  //   setData((data) => Notes);
+  // };
+
   return (
     <>
-      <div className="app">
-        <LeftPanel>
-          <Header />
-          <JournalAddButton />
-          <JournalList items={mapItems(data)} />
-        </LeftPanel>
+      <UserContextProvider>
+        <div className="app">
+          <LeftPanel>
+            <Header />
+            <JournalAddButton />
+            <JournalList items={mapItems(data)} />
+          </LeftPanel>
 
-        <Body>
-          <JournalForm onSubmit={addNote} />
-        </Body>
-      </div>
+          <Body>
+            <JournalForm onSubmit={addNote} />
+          </Body>
+        </div>
+      </UserContextProvider>
     </>
   );
 };
