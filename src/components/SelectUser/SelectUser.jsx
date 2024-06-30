@@ -18,8 +18,8 @@ const SelectUser = () => {
         value={userId}
         onChange={changeUser}
       >
-        <option value="1">Антон</option>
-        <option value="2">Вася</option>
+        <option value="1">John</option>
+        <option value="2">Alice</option>
       </select>
     </>
   );

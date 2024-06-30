@@ -58,11 +58,6 @@ const JournalForm = ({ onSubmit, onDelete, data }) => {
     dispatchForm({ type: 'SUBMIT' });
   };
 
-  const deleteJournalNote = (e) => {
-    e.preventDefault();
-    dispatchForm({ type: 'DELETE' });
-  };
-
   useEffect(() => {
     dispatchForm({
       type: 'SET_VALUE',
