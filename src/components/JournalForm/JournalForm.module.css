@@ -4,8 +4,6 @@
   gap: 30px;
 }
 
-
-
 .input {
   border: none;
   background: none;
@@ -13,12 +11,12 @@
   font-weight: 600;
   font-size: 14px;
   color: #fff;
-  
+
   width: 100%;
 }
 
 .input:focus {
-    outline: none;
+  outline: none;
 }
 
 .form-row {
@@ -43,4 +41,18 @@
 .invalid {
   border: 1px solid red;
   background: rgb(113, 2, 2);
+}
+
+.delete {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  height: 30px;
+  width: 30px;
+}
+
+.delete:hover {
+  background: rgb(255, 255, 255, 0.05);
+  border-radius: 50%;
 }

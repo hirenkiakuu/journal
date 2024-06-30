@@ -1,11 +1,12 @@
 import styles from './Button.module.css';
+import { memo } from 'react';
 
-const Button = ({ text, onClick }) => {
+const Button = ({ children, onClick }) => {
   return (
     <button className={`${styles.button} ${styles.accent}`} onClick={onClick}>
-      {text}
+      {children}
     </button>
   );
 };
 
-export default Button;
+export default memo(Button);

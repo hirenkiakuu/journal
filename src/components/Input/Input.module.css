@@ -1,18 +1,17 @@
 .input {
-    border: none;
-    background: none;
-    font-family: var(--font-family);
-    font-weight: 600;
-    font-size: 14px;
-    color: #fff;
-  
-    width: 100%;
-  }
-  
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+
+  width: 100%;
+}
 
 .input-title {
   font-size: 32px;
-  border-bottom: 1px solid #333333;
+  /* border-bottom: 1px solid #333333; */
   outline: none;
 }
 

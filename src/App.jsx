@@ -5,6 +5,7 @@ import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import LeftPanel from './layouts/LeftPanel/LeftPanel';
 import Body from './layouts/Body/Body';
 import JournalForm from './components/JournalForm/JournalForm';
+import { useState } from 'react';
 import { UserContextProvider } from './context/user.context';
 import { useLocalStorage } from './hooks/useLocalStorage.hook';
 
@@ -21,21 +22,35 @@ function mapItems(items) {
 
 const App = () => {
   const [data, setData] = useLocalStorage('data');
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const addNote = (journalNote) => {
-    setData([
-      ...mapItems(data),
-      {
-        ...journalNote,
-        date: new Date(journalNote.date),
-        id: data?.length > 0 ? Math.max(...data.map((i) => i.id)) + 1 : 1,
-      },
-    ]);
+    if (!journalNote.id) {
+      setData([
+        ...mapItems(data),
+        {
+          ...journalNote,
+          date: new Date(journalNote.date),
+          id: data?.length > 0 ? Math.max(...data.map((i) => i.id)) + 1 : 1,
+        },
+      ]);
+    } else {
+      setData([
+        ...mapItems(data).map((i) => {
+          if (i.id === journalNote.id) {
+            return {
+              ...journalNote,
+            };
+          }
+          return i;
+        }),
+      ]);
+    }
   };
 
-  // const filterNotesByUserId = (Notes) => {
-  //   setData((data) => Notes);
-  // };
+  const deleteNote = (id) => {
+    setData([...data.filter((i) => i.id !== id)]);
+  };
 
   return (
     <>
@@ -43,12 +58,16 @@ const App = () => {
         <div className="app">
           <LeftPanel>
             <Header />
-            <JournalAddButton />
-            <JournalList items={mapItems(data)} />
+            <JournalAddButton clearForm={() => setSelectedItem(null)} />
+            <JournalList items={mapItems(data)} setItem={setSelectedItem} />
           </LeftPanel>
 
           <Body>
-            <JournalForm onSubmit={addNote} />
+            <JournalForm
+              onSubmit={addNote}
+              onDelete={deleteNote}
+              data={selectedItem}
+            />
           </Body>
         </div>
       </UserContextProvider>
