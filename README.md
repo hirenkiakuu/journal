@@ -54,3 +54,89 @@ npm i typescript@^4.4.4 --save-dev
 
 these rules are for **commas** and **quotes**, another rules can be overwritten if needed.
 eslint will fix this issues automatically when file is saved.
+
+> [!WARNING]
+> This method of linter cofiguration is depreceated, use following method instead
+
+1. Create .prettierrc config file in root of project folder:
+
+```
+   {
+   "semi": true,
+   "singleQuote": true,
+   "jsxSingleQuote": false,
+   "trailingComma": "all",
+   "endOfLine": "lf"
+   } // put here your custom rules (request .prettierrc option in prettier options additionally)
+```
+
+2. Config .eslintrc.cjs:
+
+```
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:prettier/prettier', // another option: prettier/recommended (but this may cause eof warns)
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['react-refresh'],
+  rules: {
+    'prettier/prettier': [
+      'warn',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+  },
+};
+
+```
+
+3. Open .vscode folder and put following lines (you can config this globally on IDE level)
+
+```
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.eol": "\n",
+  "prettier.endOfLine": "lf", // can be deleted
+  "prettier.jsxSingleQuote": false, // can be deleted
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "never",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.codeActionsOnSave.rules": [
+    "import/*",
+    "no-relative-import-paths/*",
+    "@typescript-eslint/consistent-type-imports",
+    "unused-imports/no-unused-imports",
+    "sort-exports/sort-exports"
+  ]
+}
+```
+
+4. Install packages:
+
+```
+npm i --save-dev eslint-config-prettier eslint-plugin-prettier eslint-plugin-react-refresh prettier eslint
+```
+
+> [!NOTE]
+> This guide may need further testing, open to improvements and suggestions
